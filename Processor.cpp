@@ -132,27 +132,27 @@ void Processor::checkDelimiters()
 void Processor::throwClosingRunTimeErr(int currLine, int col,
                                 char closingDelim, char openingDelim)
 {
-    string openingDelimErr;
+    string expectedClosing;
     if (closingDelim == ')' && openingDelim != '(')
     {
         if(openingDelim == '[')
         {
-            openingDelimErr = "]";
+            expectedClosing = "]";
         }
         if(openingDelim == '{')
         {
-            openingDelimErr = "}";
+            expectedClosing = "}";
         }
     }
     if (closingDelim == '}' && openingDelim != '{')
     {
         if(openingDelim == '(')
         {
-            openingDelimErr = ")";
+            expectedClosing = ")";
         }
         if(openingDelim == '[')
         {
-            openingDelimErr = "]";
+            expectedClosing = "]";
         }
     }
     if (closingDelim == ']' && openingDelim != '[')
@@ -160,11 +160,11 @@ void Processor::throwClosingRunTimeErr(int currLine, int col,
         
         if(openingDelim == '(')
         {
-            openingDelimErr = ")";
+            expectedClosing = ")";
         }
         if(openingDelim == '{')
         {
-            openingDelimErr = "}";
+            expectedClosing = "}";
         }
     }
         string delimErrChar;
@@ -178,7 +178,7 @@ void Processor::throwClosingRunTimeErr(int currLine, int col,
         string currCol(ss.str());
         ss.str("");
         throw runtime_error("Error: Expected '" +
-                            openingDelimErr +
+                            expectedClosing +
                             "' on line : " +
                             currLineStr +
                             " column : " +

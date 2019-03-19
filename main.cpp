@@ -42,11 +42,11 @@ int main(int argc, const char * argv[]) {
     try{
         if (argc <= 1)
         {
-            throw invalid_argument("Not enough arguments passed.");
+            throw invalid_argument("Not enough arguments passed.\n");
         }
         if (argc > 2)
         {
-            throw invalid_argument("Too many arguments passed.");
+            throw invalid_argument("Too many arguments passed.\n");
         }
         bool contProgram(true), passes(false);
         while (contProgram)
@@ -84,8 +84,17 @@ int main(int argc, const char * argv[]) {
                 }
                 Processor* pPtr = new Processor(numLines, fullText);
                 // will throw error and exit if delims not matched
-                pPtr->checkDelimiters();
-                //cout << "Delimiters Matched\n";
+                try{
+                    pPtr->checkDelimiters();
+                }
+                // if error thrown catch, delete resources, rethrow error
+                catch(runtime_error &e)
+                {
+                    delete pPtr;
+                    delete fh;
+                    inFile.close();
+                    throw e;
+                }
                 delete  pPtr;
                 inFile.close();
             }
@@ -123,7 +132,7 @@ int main(int argc, const char * argv[]) {
 /*              FUNCTION DEFINITIONS BEGIN                 */
 /***********************************************************/
 
-
+// asks user if they would like to continue program
 bool askContinue()
 {
     string input;
